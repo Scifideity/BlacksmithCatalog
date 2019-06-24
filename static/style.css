@@ -1,0 +1,56 @@
+body {
+    background-color: #1F1F1F !important;
+}
+
+h2, h3, h4 {
+    color: #999999 !important;
+}
+
+ul {
+    border
+}
+
+a:link, a:visited{
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.navbar-profile-image {
+	height: 40px;
+	padding-bottom: 15px;
+}
+
+.row.content {
+    height: 450px
+}
+
+.mybody {
+     background-color: #FFFFFF !important;
+     margin:0;
+}
+
+.description {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    color: antiquewhite;
+}
+
+.icon-input-btn{
+    display: inline-block;
+    position: relative;
+}
+
+.icon-input-btn .glyphicon{
+    display: inline-block;
+    position: absolute;
+    left: 0.65em;
+    top: 30%;
+}

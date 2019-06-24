@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block content %}
+
+      {% with message = get_flashed_messages() %}
+            {% if message %}
+                  <strong> {{ message }} </strong>
+            {% endif %}
+      {% endwith %}
+      <div class="container-fluid navbar-inverse text-left">
+            <div class="row content navbar-inverse" style="">
+                  <div class="col-sm-4 sidenav navbar navbar-inverse">
+                        <ul class="nav navbar-inverse nav-pills nav-stacked">
+                              {% for c in category %}
+                                    <li>
+                                          <a href = "{{url_for('showCategoryItem',category_name = c.name)}}" >{{c.name}}</a>
+                                    </li>
+                              {% endfor %}
+                        </ul>
+                  </div>
+                  <div class="col-sm-4 text-left">
+                        <button type="button" class="btn btn-success btn-rounded">
+                              <a href="{{url_for('newItem')}}" style="text-decoration:none ; color: antiquewhite;">
+                              <span class="glyphicon glyphicon-plus"> </span> Add Item </a>
+                        </button>
+                        {% include "catalogList.html" %}
+                  </div>
+                  <div class="col-sm-4" style="padding-top: 0px; padding-bottom: 0px;">
+                      <img src="{{url_for('static', filename='Hephaestus.png')}}" class="img-responsive" alt="Hephaestus"/>
+                  </div>
+            </div>
+      </div>
+{% endblock %}
