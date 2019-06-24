@@ -5,11 +5,21 @@ import requests
 import random
 import string
 import os
-from flask import Flask, render_template, request, redirect
-from flask import url_for, flash, jsonify
+from flask import (Flask,
+                   render_template,
+                   request,
+                   redirect,
+                   url_for,
+                   flash,
+                   jsonify
+                   )
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, joinedload
-from database_setup import Category, Base, CategoryItem, User
+from database_setup import (Category,
+                            Base,
+                            CategoryItem,
+                            User
+                            )
 
 # Google Oauth and GConnect
 from flask import session as login_session
@@ -137,7 +147,8 @@ def gconnect():
 
 
 def createUser(login_session):
-    newUser = User(name=login_session['username'], email=login_session['email'],
+    newUser = User(name=login_session['username'],
+                   email=login_session['email'],
                    picture=login_session['picture'])
     session.add(newUser)
     session.commit()
@@ -171,7 +182,8 @@ def gdisconnect():
                                  401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s'\
+        % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '
@@ -225,8 +237,10 @@ def showCategoryItem(category_name):
     categoryName = session.query(Category).filter_by(id=categoryid).one()
     count = session.query(CategoryItem).filter_by(
         category_id=categoryid).count()
-    if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publiccategoryItem.html', category=category,
+    if 'username' not in login_session or creator.id\
+            != login_session['user_id']:
+        return render_template('publiccategoryItem.html',
+                               category=category,
                                items=categoryItems, categoryName=categoryName,
                                count=count, creator=creator)
     else:
@@ -245,7 +259,8 @@ def showItem(category_name, item_id):
         return render_template('publicitem.html', item=item,
                                category_name=category_name)
     else:
-        return render_template('item.html', item=item, category_name=category_name)
+        return render_template('item.html', item=item,
+                               category_name=category_name)
 
 # Add Item
 
@@ -275,7 +290,8 @@ def newItem():
 
 
 @app.route(
-    '/catalog/<string:category_name>/<int:item_id>/edit', methods=['GET', 'POST'])
+    '/catalog/<string:category_name>/<int:item_id>/edit',
+    methods=['GET', 'POST'])
 def editItem(category_name, item_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -283,8 +299,14 @@ def editItem(category_name, item_id):
     editeditem = session.query(CategoryItem).filter_by(
         id=item_id).one_or_none()
     if editeditem.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to edit this Item. Please create your own Item in order to edit.'); }</script><body onload='myFunction()''>"
-
+        flash('You are not authorized to edit {}. '
+              'Please create your own Item in order to edit'
+              .format(editItem.name))
+        return redirect(url_for('showCatalog'))
+#        return "<script>function myFunction()"\
+#               "{alert('You are not  authorized to edit this Item."\
+#               "Please create your own Item in order to edit.'); }"\
+#               "</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editeditem.title = request.form['name']
@@ -297,21 +319,31 @@ def editItem(category_name, item_id):
         flash("Item %s Edited Successfuly" % editeditem.title)
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('editItem.html', categories=categories,
-                               category_name=category_name, item=editeditem)
+        return render_template('editItem.html',
+                               categories=categories,
+                               category_name=category_name,
+                               item=editeditem)
 
 # Delete Item
 
 
 @app.route(
-    '/catalog/<string:category_name>/<int:item_id>/delete', methods=['GET', 'POST'])
+    '/catalog/<string:category_name>/<int:item_id>/delete',
+    methods=['GET', 'POST'])
 def deleteItem(category_name, item_id):
     if 'username' not in login_session:
         return redirect('/login')
     categories = session.query(Category)
     itemToDelete = session.query(CategoryItem).filter_by(id=item_id).one()
     if itemToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to delete this Item. Please create your own Item.');}</script><body onload='myFunction()' >"
+        flash('You are not authorized to delete {}. '
+              'Please create your own Item in order to edit'
+              .format(editItem.name))
+        return redirect(url_for('showCatalog'))
+#        return "<script>function myFunction()"\
+#               "{alert('You are not  authorized to edit this Item."\
+#               "Please create your own Item in order to edit.'); }"\
+#               "</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
@@ -336,8 +368,9 @@ def deleteItem(category_name, item_id):
 def catalogJSON(category_id):
     category = session.query(Category).options(
         joinedload(Category.items)).filter_by(id=category_id).all()
-    return jsonify(Category=[dict(c.serialize, items=[i.serialize
-                                                      for i in c.items]) for c in category])
+    return jsonify(Category=[dict(c.serialize,
+                                  items=[i.serialize for i in c.items])
+                             for c in category])
 
 # Show All Items in All Categories
 
