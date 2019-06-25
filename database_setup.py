@@ -78,6 +78,7 @@ class CategoryItem(Base):
             'image': self.image,
             'id': self.id,
             'category_id': self.category_id,
+            'user_id': self.user_id,
         }
 
 
