@@ -369,8 +369,8 @@ def catalogJSON(category_id):
     category = session.query(Category).options(
         joinedload(Category.items)).filter_by(id=category_id).all()
     return jsonify(Category=[dict(c.serialize,
-                                  items=[i.serialize for i in c.items])
-                             for c in category])
+                                  items=[i.serialize for i in c.items])for
+                             c in category])
 
 # Show All Items in All Categories
 
