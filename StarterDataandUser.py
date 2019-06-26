@@ -42,7 +42,7 @@ Item1 = CategoryItem(user_id=1, title="Fullering", description="Rounded wedge on
 session.add(Item1)
 session.commit()
 
-print "Hammers added"
+print ('Hammers added')
 
 # Category2 Anvils
 category2 = Category(user_id=1, name="Anvils")
@@ -69,7 +69,7 @@ Item1 = CategoryItem(user_id=1, title="Type B25", description="Standard weights 
 session.add(Item1)
 session.commit()
 
-print "Anvils added"
+print ('Anvils added')
 
 # Category3 Chisels
 category3 = Category(user_id=1, name="Chisels")
@@ -96,7 +96,7 @@ Item1 = CategoryItem(user_id=1, title="Rounded", description="Squared tip but ro
 
 session.add(Item1)
 session.commit()
-print "Chisels added"
+print ('Chisels added')
 
 # Category4 Punches
 category4 = Category(user_id=1, name="Punches")
@@ -122,7 +122,7 @@ Item1 = CategoryItem(user_id=1, title="Rounded", description="Round tip rounded 
 
 session.add(Item1)
 session.commit()
-print "Punches added"
+print ('Punches added')
 
 # Category5 Marking
 category5 = Category(user_id=1, name="Marking")
@@ -148,7 +148,7 @@ Item1 = CategoryItem(user_id=1, title="High Temp Marker", description="Liquid fi
 
 session.add(Item1)
 session.commit()
-print "Marking added"
+print ('Marking added')
 
 
 # Category6 Tongs
@@ -187,7 +187,7 @@ Item1 = CategoryItem(user_id=1, title="Bent-Bit Tongs", description="For holding
 
 session.add(Item1)
 session.commit()
-print "Tongs added"
+print ('Tongs Added')
 
 # Category7 Forges
 category7 = Category(user_id=1, name="Forges")
@@ -214,7 +214,7 @@ Item1 = CategoryItem(user_id=1, title="Coal Forge", description="Every Blacksmit
 
 session.add(Item1)
 session.commit()
-print "Forges added"
+print ('Forges added')
 
 # Category Template - Replace 'TEMPLATE with Category Name'
 # Category TEMPLATE
@@ -229,6 +229,6 @@ print "Forges added"
 
 # session.add(Item#)
 # session.commit()
-# print "TEMPLATE added"
+# print ('TEMPLATE added')
 
-print "Starter Database populated..."
+print ('Starter Database populated...')

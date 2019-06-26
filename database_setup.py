@@ -86,4 +86,4 @@ class CategoryItem(Base):
 engine = create_engine('sqlite:///blacksmithcatalog.db')
 
 Base.metadata.create_all(engine)
-print 'Database Setup Complete'
+print ('Database Setup Complete')

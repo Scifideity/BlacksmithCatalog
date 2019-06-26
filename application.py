@@ -98,7 +98,7 @@ def gconnect():
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print "Token's client ID does not match app's."
+        print ('Tokens client ID does not match apps.')
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -142,7 +142,7 @@ def gconnect():
     output += ' "style = "width: 300px; height: 300px;border-radius: 150px;'\
         '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("You are now logged in as %s" % login_session['username'])
-    print "done!"
+    print ('Done!')
     return output
 
 
@@ -174,9 +174,9 @@ def getUserID(email):
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session['access_token']
-    print 'In gdisconnect access token is %s', access_token
-    print 'User name is: %s' % login_session['username']
-    print login_session['username']
+    print ('In gdisconnect access token is %s'), access_token
+    print ('User name is: %s') % login_session['username']
+    print (login_session['username'])
     if access_token is None:
         response = make_response(json.dumps('Current user not connected.'),
                                  401)
@@ -186,8 +186,8 @@ def gdisconnect():
         % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
-    print 'result is '
-    print result
+    print ('result is ')
+    print (result)
     if result['status'] == '200':
         del login_session['access_token']
         del login_session['gplus_id']
@@ -230,7 +230,7 @@ def showCategoryItem(category_name):
     category = session.query(Category)
     categoryId = session.query(Category).filter_by(name=category_name).one()
     categoryid = categoryId.id
-    print categoryid
+    print (categoryid)
     categoryItems = session.query(CategoryItem).filter_by(
         category_id=categoryid).all()
     creator = getUserInfo(categoryId.user_id)
@@ -254,7 +254,7 @@ def showCategoryItem(category_name):
 @app.route('/catalog/<string:category_name>/<int:item_id>')
 def showItem(category_name, item_id):
     item = session.query(CategoryItem).filter_by(id=item_id).one()
-    print item.description
+    print (item.description)
     if 'username' not in login_session:
         return render_template('publicitem.html', item=item,
                                category_name=category_name)
@@ -269,7 +269,7 @@ def showItem(category_name, item_id):
 def newItem():
     if 'username' not in login_session:
         return redirect('/login')
-    print "inside new item"
+    print ('inside new item')
     categories = session.query(Category)
     if request.method == 'POST':
         category_name = request.form['category_name']
