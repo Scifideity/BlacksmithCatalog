@@ -5,7 +5,7 @@ import requests
 import random
 import string
 import os
-from flask import (Flask,
+from flask import (Flask, session,
                    render_template,
                    request,
                    redirect,
@@ -28,6 +28,7 @@ from oauth2client.client import FlowExchangeError
 from flask import make_response
 
 app = Flask(__name__)
+app.secret_key = 'b_5y2LF4Q8znxec'
 
 # Create database, skip same thread check
 engine = create_engine('sqlite:///blacksmithcatalog.db',
@@ -48,7 +49,7 @@ APPLICATION_NAME = "My Item Catalog"
 def showLogin():
     # Anti-forgery state token
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32))
+                    for x in range(32))
     login_session['state'] = state
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
@@ -78,7 +79,9 @@ def gconnect():
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
     h = httplib2.Http()
-    result = json.loads(h.request(url, 'GET')[1])
+    # resp, content = h.request(url, "GET")
+    # str_content = content.decode('utf-8')
+    result = json.loads((h.request(url, 'GET')[1]).decode())
 
     # If there was an error in the access token info, abort.
     if result.get('error') is not None:
@@ -175,7 +178,7 @@ def getUserID(email):
 def gdisconnect():
     access_token = login_session['access_token']
     print ('In gdisconnect access token is %s'), access_token
-    print ('User name is: %s') % login_session['username']
+    # print ('User name is: %s') % login_session['username']
     print (login_session['username'])
     if access_token is None:
         response = make_response(json.dumps('Current user not connected.'),
@@ -392,6 +395,5 @@ def catalogItemJSON(category_id, item_id):
 
 
 if __name__ == '__main__':
-    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=8000, threaded=False)
